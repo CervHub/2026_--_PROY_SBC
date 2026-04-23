@@ -43,9 +43,9 @@ class Resolver:
         # Cantidad de píxeles negros
         black_pixels = np.sum(thresh > 0)
         # Guardar para debug con black_pixels en el nombre
-        # os.makedirs(debug_dir, exist_ok=True)
-        # base, ext = os.path.splitext(os.path.basename(image_path))
-        # debug_filename = f"{base}_black_{black_pixels}{ext}"
-        # debug_path = os.path.join(debug_dir, debug_filename)
-        # cv2.imwrite(debug_path, thresh)
+        os.makedirs(debug_dir, exist_ok=True)
+        base, ext = os.path.splitext(os.path.basename(image_path))
+        debug_filename = f"{base}_black_{black_pixels}{ext}"
+        debug_path = os.path.join(debug_dir, debug_filename)
+        cv2.imwrite(debug_path, thresh)
         return black_pixels > threshold
