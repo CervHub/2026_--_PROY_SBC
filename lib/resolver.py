@@ -11,15 +11,20 @@ class Resolver:
         """
         Realiza OCR en la imagen dada y retorna el texto extraído.
         """
-        config = "--oem 1 --psm 6"
+        # Lee la imagen
         img = cv2.imread(image_path, 0)
+
+        # 1. Binarizar usando Otsu 
         img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
+        # 2. Realizar OCR con Tesseract
+        config = "--oem 1 --psm 6" # LSTM OCR Engine, Assume a single uniform block of text
         return pytesseract.image_to_string(img, lang="spa", config=config)
 
     client = vision.ImageAnnotatorClient()
     @staticmethod
     def hw(image_path):
+        return ""
         """"
         Realiza OCR (Especializado en Hand Writing) usando Google Cloud Vision API y retorna el texto extraído.
         """
@@ -30,22 +35,87 @@ class Resolver:
         return response.full_text_annotation.text
 
     @staticmethod
-    def density(image_path, threshold=35, debug_dir="outputs/debug"):
-        """
-        Heurística modificada: ignora el borde de la casilla y analiza solo el interior.
-        Ahora compara la cantidad absoluta de píxeles negros con el umbral.
-        """
-        # Leer imagen
+    def omr(image_path):
+        # Lee la imagen
         img = cv2.imread(image_path, 0)
-        # Binarizar (invertida, umbral fijo bajo)
-        # Solo los píxeles realmente oscuros se consideran "marcados"
-        _, thresh = cv2.threshold(img, 70, 255, cv2.THRESH_BINARY_INV)
-        # Cantidad de píxeles negros
-        black_pixels = np.sum(thresh > 0)
-        # Guardar para debug con black_pixels en el nombre
+
+        # preparar directorio de debug
+        debug_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "outputs", "debug")
         os.makedirs(debug_dir, exist_ok=True)
-        base, ext = os.path.splitext(os.path.basename(image_path))
-        debug_filename = f"{base}_black_{black_pixels}{ext}"
-        debug_path = os.path.join(debug_dir, debug_filename)
-        cv2.imwrite(debug_path, thresh)
-        return black_pixels > threshold
+        base_name = os.path.splitext(os.path.basename(image_path))[0]
+        cv2.imwrite(os.path.join(debug_dir, f"{base_name}_0_original.png"), img)
+
+        # 1. Recorte interno del 10%
+        h, w = img.shape
+        pad = int(min(h, w) * 0.1)
+        inner = img[pad:h-pad, pad:w-pad]
+        cv2.imwrite(os.path.join(debug_dir, f"{base_name}_1_inner10.png"), inner)
+        if inner.size == 0:
+            return False
+
+        # 2. Binarización (igual que antes)
+        _, thresh = cv2.threshold(inner, 150, 255, cv2.THRESH_BINARY_INV)
+        cv2.imwrite(os.path.join(debug_dir, f"{base_name}_2_thresh.png"), thresh)
+
+        # 3. Recorte cuadrado centrado en los componentes
+        # Encontrar bounding box de todos los componentes
+        coords = cv2.findNonZero(thresh)
+        if coords is None:
+            return False
+        x, y, w_box, h_box = cv2.boundingRect(coords)
+        # Hacer el recorte cuadrado centrado
+        cx = x + w_box // 2
+        cy = y + h_box // 2
+        side = max(w_box, h_box)
+        # Definir los límites del recorte cuadrado
+        half = side // 2
+        start_x = max(cx - half, 0)
+        start_y = max(cy - half, 0)
+        end_x = min(start_x + side, thresh.shape[1])
+        end_y = min(start_y + side, thresh.shape[0])
+        # Ajustar si el recorte se sale de la imagen
+        if end_x - start_x < side:
+            start_x = max(end_x - side, 0)
+        if end_y - start_y < side:
+            start_y = max(end_y - side, 0)
+        square = thresh[start_y:end_y, start_x:end_x]
+        cv2.imwrite(os.path.join(debug_dir, f"{base_name}_3_square.png"), square)
+        if square.size == 0:
+            return False
+
+        # 4. Calcular densidad
+        density = np.sum(square > 0) / square.size
+
+        # 5. Calcular componentes
+        num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(square, 8)
+        areas = stats[1:, cv2.CC_STAT_AREA]
+
+        # 6. Calcular peso por píxel respecto al centro
+        center_y, center_x = square.shape[0] / 2, square.shape[1] / 2
+        yy, xx = np.indices(square.shape)
+        dist = np.sqrt(((xx - center_x) / center_x) ** 2 + ((yy - center_y) / center_y) ** 2)
+        mask = (square > 0)
+        pixel_weights = (1 - dist) * mask
+        center_weight = np.sum(pixel_weights) / np.sum(mask) if np.sum(mask) > 0 else 0
+
+        # 7. Calcular peso por cantidad de componentes
+        valid_areas = [a for a in areas if 5 < a < (square.size * 0.5)]
+        n_components = len(valid_areas)
+
+        # 8. Calcular ponderación final
+        score = (
+            0.6 * density +           # densidad tiene más peso
+            0.2 * center_weight +     # peso por píxel respecto al centro
+            0.2 * (n_components / 10) # más componentes suma peso, normalizado
+        )
+
+        # 9. Calcular threshold adaptativo: decae suavemente con el área, nunca menor a 0.05 ni mayor a 0.3
+        area = square.size
+        _min = 0.05
+        _max = 0.3
+        smooth_factor = 0.005
+        threshold = _max / (1 + smooth_factor * area) + _min
+        threshold = min(max(threshold, _min), _max)
+        print(f"[{image_path}]: density={density:.3f}, center_weight={center_weight:.3f}, components={n_components}, score={score:.3f}, threshold={threshold:.3f}, area={area}")
+
+        return score > threshold

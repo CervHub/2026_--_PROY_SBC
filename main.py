@@ -60,8 +60,8 @@ def resolve(data):
         try:
             if region.resolver.value == "OCR":
                 value = Resolver.ocr(region.image_path)
-            elif region.resolver.value == "DENSITY":
-                value = str(Resolver.density(region.image_path))
+            elif region.resolver.value == "OMR":
+                value = str(Resolver.omr(region.image_path))
             elif region.resolver.value == "HW":
                 value = Resolver.hw(region.image_path)
             else:

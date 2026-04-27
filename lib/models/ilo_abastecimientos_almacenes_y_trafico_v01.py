@@ -3,7 +3,7 @@ from typing import Optional, List
 
 
 class Resolver(Enum):
-    DENSITY = "DENSITY"
+    OMR = "OMR"
     OCR = "OCR"
     HW = "HW"
 
