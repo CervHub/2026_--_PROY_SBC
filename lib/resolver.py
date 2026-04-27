@@ -39,10 +39,17 @@ class Resolver:
         # Lee la imagen
         img = cv2.imread(image_path, 0)
 
-        # preparar directorio de debug
-        debug_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "outputs", "debug")
+        # preparar directorio de debug en la carpeta de la imagen
+        # Si la imagen está en outputs/output_xxx/regions/region_N.png, guardar en outputs/output_xxx/debug/
+        image_dir = os.path.dirname(image_path)
+        image_name = os.path.splitext(os.path.basename(image_path))[0]
+        if os.path.basename(image_dir) == "regions":
+            parent_dir = os.path.dirname(image_dir)
+            debug_dir = os.path.join(parent_dir, "debug")
+        else:
+            debug_dir = os.path.join(image_dir, "debug")
         os.makedirs(debug_dir, exist_ok=True)
-        base_name = os.path.splitext(os.path.basename(image_path))[0]
+        base_name = image_name
         cv2.imwrite(os.path.join(debug_dir, f"{base_name}_0_original.png"), img)
 
         # 1. Recorte interno del 10%
@@ -66,7 +73,8 @@ class Resolver:
         # Hacer el recorte cuadrado centrado
         cx = x + w_box // 2
         cy = y + h_box // 2
-        side = max(w_box, h_box)
+        min_side = 10
+        side = max(max(w_box, h_box), min_side)
         # Definir los límites del recorte cuadrado
         half = side // 2
         start_x = max(cx - half, 0)
@@ -79,6 +87,12 @@ class Resolver:
         if end_y - start_y < side:
             start_y = max(end_y - side, 0)
         square = thresh[start_y:end_y, start_x:end_x]
+        # Si el recorte es menor a 10x10, rellenar con ceros para que sea 10x10
+        sh, sw = square.shape
+        if sh < min_side or sw < min_side:
+            padded = np.zeros((max(sh, min_side), max(sw, min_side)), dtype=square.dtype)
+            padded[:sh, :sw] = square
+            square = padded
         cv2.imwrite(os.path.join(debug_dir, f"{base_name}_3_square.png"), square)
         if square.size == 0:
             return False
