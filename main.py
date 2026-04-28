@@ -10,6 +10,8 @@ import lib.models.ilo_fundicion_v05 as ilo_f_v05
 from lib.resolver import Resolver
 from lib.debug import Debug
 from lib.parallel_task_queue import ParallelTaskQueue
+from lib.utils.corporation_handler import CorporationHandler
+from lib.utils.management_handler import ManagementHandler
 
 def align_and_crop(input_path, template_path, data, output_dir="outputs"):
     """"Alinea la imagen de entrada con la plantilla y recorta las regiones especificadas."""
@@ -86,10 +88,13 @@ def resolve(data):
         region.extracted_value = future.result()
 
 def main():
-    input_dir = "inputs"
-    corporation_dir = "ilo"
-    management_dir = "fundicion"
+    corporation_id = 2
+    management_id = 3
     version = "v05"
+    input_dir = "inputs"
+    corporation_dir = CorporationHandler.get_by_id(corporation_id)
+    management_dir = ManagementHandler.get_by_corporation_and_id(corporation_dir, management_id)
+    model = ManagementHandler.get_model_by_corporation_and_id(corporation_dir, management_id, version)
 
     target_dir = os.path.join(input_dir, corporation_dir, management_dir)
     target_base_path = f"{corporation_dir}.{management_dir}.{version}"
@@ -103,7 +108,7 @@ def main():
     # Paso 0: Cargar datos (una vez) --------------------------------------------------------------
     with open(target_template_mapping_path, "r") as f:
         raw_data = json.load(f)
-    template_data = ilo_f_v05.IloFundicionV05.from_json(raw_data)    
+    template_data = model.from_json(raw_data)    
     data_list = [copy.deepcopy(template_data) for _ in input_paths]
 
     # Paso 1: Segmentar la imagen en regiones (en paralelo) --------------------------------------------------------------
@@ -138,3 +143,9 @@ if __name__ == "__main__":
     Debug.time(lambda: main(), "Tiempo de ejecución total")
 
 # export GOOGLE_APPLICATION_CREDENTIALS="/Users/cerv/Projects/2026_--_Proy_SBC/sbc-contentextraction-9cf6e2740a0d.json"
+
+
+
+# transforma esto en una API usando flask donde se tendrá en endpoint api/sbc/extract-content
+
+# el endpoint será multipart y recibira una lista de imagenes y en la url una serie de ids que nos ayudara a indentificar la corporacion el managmente
