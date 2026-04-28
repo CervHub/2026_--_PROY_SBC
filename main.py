@@ -6,6 +6,7 @@ import numpy as np
 import threading
 import lib.models.ilo_abastecimientos_almacenes_y_trafico_v01 as ilo_aayt_v01
 import lib.models.ilo_ferrocarril_industrial_v02 as ilo_fi_v02
+import lib.models.ilo_fundicion_v05 as ilo_f_v05
 from lib.resolver import Resolver
 from lib.debug import Debug
 from lib.parallel_task_queue import ParallelTaskQueue
@@ -87,8 +88,8 @@ def resolve(data):
 def main():
     input_dir = "inputs"
     corporation_dir = "ilo"
-    management_dir = "ferrocarril_industrial"
-    version = "v02"
+    management_dir = "fundicion"
+    version = "v05"
 
     target_dir = os.path.join(input_dir, corporation_dir, management_dir)
     target_base_path = f"{corporation_dir}.{management_dir}.{version}"
@@ -96,13 +97,13 @@ def main():
     target_template_mapping_path = os.path.join(target_dir, f"data/{target_base_path}.json")
 
     # Lista de sufijos para los archivos de entrada
-    input_suffixes = ["001.png", "002.jpeg", "003.jpeg", "004.jpeg", "005.jpeg"]
+    input_suffixes = ["001.jpeg"]
     input_paths = [os.path.join(target_dir, f"{target_base_path}.eg{suffix}") for suffix in input_suffixes]
 
     # Paso 0: Cargar datos (una vez) --------------------------------------------------------------
     with open(target_template_mapping_path, "r") as f:
         raw_data = json.load(f)
-    template_data = ilo_fi_v02.IloFerrocarrilIndustrialV02.from_json(raw_data)    
+    template_data = ilo_f_v05.IloFundicionV05.from_json(raw_data)    
     data_list = [copy.deepcopy(template_data) for _ in input_paths]
 
     # Paso 1: Segmentar la imagen en regiones (en paralelo) --------------------------------------------------------------

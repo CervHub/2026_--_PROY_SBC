@@ -61,7 +61,7 @@ class Resolver:
             return False
 
         # 2. Binarización (igual que antes)
-        _, thresh = cv2.threshold(inner, 150, 255, cv2.THRESH_BINARY_INV)
+        _, thresh = cv2.threshold(inner, 100, 255, cv2.THRESH_BINARY_INV)
         cv2.imwrite(os.path.join(debug_dir, f"{base_name}_2_thresh.png"), thresh)
 
         # 3. Recorte cuadrado centrado en los componentes
@@ -130,6 +130,8 @@ class Resolver:
         smooth_factor = 0.005
         threshold = _max / (1 + smooth_factor * area) + _min
         threshold = min(max(threshold, _min), _max)
-        print(f"[{image_path}]: density={density:.3f}, center_weight={center_weight:.3f}, components={n_components}, score={score:.3f}, threshold={threshold:.3f}, area={area}")
+
+        # Imprimir métricas para debug
+        print(f"[{image_path}]: density={density:.3f} center_weight={center_weight:.3f} components={n_components:d} score={score:.3f} threshold={threshold:.3f} area={area:d}")
 
         return score > threshold
