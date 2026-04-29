@@ -88,9 +88,9 @@ def resolve(data):
         region.extracted_value = future.result()
 
 def main():
-    corporation_id = 2
-    management_id = 3
-    version = "v05"
+    corporation_id = 1
+    management_id = 1
+    version = "v06"
     input_dir = "inputs"
     corporation_dir = CorporationHandler.get_by_id(corporation_id)
     management_dir = ManagementHandler.get_by_corporation_and_id(corporation_dir, management_id)
@@ -102,9 +102,9 @@ def main():
     target_template_mapping_path = os.path.join(target_dir, f"data/{target_base_path}.json")
 
     # Lista de sufijos para los archivos de entrada
-    input_suffixes = ["001.jpeg"]
+    input_suffixes = ["003.jpeg"]
     input_paths = [os.path.join(target_dir, f"{target_base_path}.eg{suffix}") for suffix in input_suffixes]
-
+    
     # Paso 0: Cargar datos (una vez) --------------------------------------------------------------
     with open(target_template_mapping_path, "r") as f:
         raw_data = json.load(f)
@@ -143,9 +143,3 @@ if __name__ == "__main__":
     Debug.time(lambda: main(), "Tiempo de ejecución total")
 
 # export GOOGLE_APPLICATION_CREDENTIALS="/Users/cerv/Projects/2026_--_Proy_SBC/sbc-contentextraction-9cf6e2740a0d.json"
-
-
-
-# transforma esto en una API usando flask donde se tendrá en endpoint api/sbc/extract-content
-
-# el endpoint será multipart y recibira una lista de imagenes y en la url una serie de ids que nos ayudara a indentificar la corporacion el managmente

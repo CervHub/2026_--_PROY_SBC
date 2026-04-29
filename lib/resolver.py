@@ -60,9 +60,14 @@ class Resolver:
         if inner.size == 0:
             return False
 
-        # 2. Binarización (igual que antes)
-        _, thresh = cv2.threshold(inner, 100, 255, cv2.THRESH_BINARY_INV)
-        cv2.imwrite(os.path.join(debug_dir, f"{base_name}_2_thresh.png"), thresh)
+        # 2. Binarización adaptativa según iluminación
+        mean_val = np.mean(inner)
+        min_thresh = 80
+        max_thresh = 180
+        offset = -50
+        thresh_val = int(np.clip(mean_val + offset, min_thresh, max_thresh))
+        _, thresh = cv2.threshold(inner, thresh_val, 255, cv2.THRESH_BINARY_INV)
+        cv2.imwrite(os.path.join(debug_dir, f"{base_name}_2_thresh_{thresh_val}.png"), thresh)
 
         # 3. Recorte cuadrado centrado en los componentes
         # Encontrar bounding box de todos los componentes

@@ -1,3 +1,4 @@
+from lib.models.cerv_concentradora_v06 import CervMantenimientoV06
 import lib.models.ilo_abastecimientos_almacenes_y_trafico_v01 as ilo_aayt_v01
 import lib.models.ilo_ferrocarril_industrial_v02 as ilo_fi_v02
 import lib.models.ilo_fundicion_v05 as ilo_f_v05
@@ -6,6 +7,7 @@ class ManagementHandler:
 	@staticmethod
 	def get_by_corporation_and_id(corporation, management_id):
 		handler_map = {
+			"cerv": CervManagementVersion,
 			"cuajone": CuajoneManagementVersion,
 			"ilo": IloManagementVersion,
 			"toquepala": ToquepalaManagementVersion,
@@ -18,6 +20,7 @@ class ManagementHandler:
 	@staticmethod
 	def get_model_by_corporation_and_id(corporation, management_id, version):
 		handler_map = {
+			"cerv": CervManagementVersion,
 			"cuajone": CuajoneManagementVersion,
 			"ilo": IloManagementVersion,
 			"toquepala": ToquepalaManagementVersion,
@@ -26,6 +29,23 @@ class ManagementHandler:
 		if handler:
 			return handler.get_model(management_id, version)
 		return None
+
+class CervManagementVersion:
+	CONCENTRADORA = "concentradora"
+
+	@staticmethod
+	def get_by_id(management_id):
+		mapping = {
+			1: CervManagementVersion.CONCENTRADORA,
+		}
+		return mapping.get(management_id)
+
+	@staticmethod
+	def get_model(management_id, version): 
+		mapping = {
+			(1, "v06"): CervMantenimientoV06,
+		}
+		return mapping.get((management_id, version))
 
 class CuajoneManagementVersion:
 	CONCENTRADORA = "concentradora"
