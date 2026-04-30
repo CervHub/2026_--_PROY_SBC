@@ -1,4 +1,5 @@
 from lib.models.cerv_concentradora_v06 import CervMantenimientoV06
+from lib.models.cerv_concentradora_v07 import CervMantenimientoV07
 import lib.models.ilo_abastecimientos_almacenes_y_trafico_v01 as ilo_aayt_v01
 import lib.models.ilo_ferrocarril_industrial_v02 as ilo_fi_v02
 import lib.models.ilo_fundicion_v05 as ilo_f_v05
@@ -44,6 +45,7 @@ class CervManagementVersion:
 	def get_model(management_id, version): 
 		mapping = {
 			(1, "v06"): CervMantenimientoV06,
+			(1, "v07"): CervMantenimientoV07,
 		}
 		return mapping.get((management_id, version))
 

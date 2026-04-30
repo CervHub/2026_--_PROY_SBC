@@ -29,9 +29,15 @@ def align_and_crop(input_path, template_path, data, output_dir="outputs"):
     matches = bf.match(des1, des2)
     matches = sorted(matches, key=lambda x: x.distance)
 
-    # Calcular homografía
-    src_pts = np.float32([kp1[m.queryIdx].pt for m in matches]).reshape(-1,1,2)
-    dst_pts = np.float32([kp2[m.trainIdx].pt for m in matches]).reshape(-1,1,2)
+    # Filtrar los mejores matches para mejorar la precisión
+    num_good_matches = min(100, int(len(matches) * 0.15))  # top 15% o máximo 100
+    good_matches = matches[:num_good_matches]
+    if len(good_matches) < 4:
+        raise ValueError("No hay suficientes matches buenos para calcular la homografía.")
+
+    # Calcular homografía solo con los mejores matches
+    src_pts = np.float32([kp1[m.queryIdx].pt for m in good_matches]).reshape(-1,1,2)
+    dst_pts = np.float32([kp2[m.trainIdx].pt for m in good_matches]).reshape(-1,1,2)
     H, mask = cv2.findHomography(dst_pts, src_pts, cv2.RANSAC, 5.0)
 
     # Alinear imagen
@@ -90,7 +96,7 @@ def resolve(data):
 def main():
     corporation_id = 1
     management_id = 1
-    version = "v07"
+    version = "v06"
     input_dir = "inputs"
     corporation_dir = CorporationHandler.get_by_id(corporation_id)
     management_dir = ManagementHandler.get_by_corporation_and_id(corporation_dir, management_id)
@@ -102,7 +108,7 @@ def main():
     target_template_mapping_path = os.path.join(target_dir, f"data/{target_base_path}.json")
 
     # Lista de sufijos para los archivos de entrada
-    input_suffixes = ["001.jpg"]
+    input_suffixes = ["001.jpeg", "002.jpeg", "003.jpeg", "004.jpeg", "005.jpeg", "006.jpeg", "007.jpeg", "008.jpeg", "009.jpeg", "010.jpeg", "011.jpeg", "012.jpg"]
     input_paths = [os.path.join(target_dir, f"{target_base_path}.eg{suffix}") for suffix in input_suffixes]
     
     # Paso 0: Cargar datos (una vez) --------------------------------------------------------------

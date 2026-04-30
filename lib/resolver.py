@@ -24,7 +24,7 @@ class Resolver:
     client = vision.ImageAnnotatorClient()
     @staticmethod
     def hw(image_path):
-        # return ""
+        return ""
         """"
         Realiza OCR (Especializado en Hand Writing) usando Google Cloud Vision API y retorna el texto extraído.
         """
