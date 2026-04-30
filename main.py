@@ -90,7 +90,7 @@ def resolve(data):
 def main():
     corporation_id = 1
     management_id = 1
-    version = "v06"
+    version = "v07"
     input_dir = "inputs"
     corporation_dir = CorporationHandler.get_by_id(corporation_id)
     management_dir = ManagementHandler.get_by_corporation_and_id(corporation_dir, management_id)
@@ -102,7 +102,7 @@ def main():
     target_template_mapping_path = os.path.join(target_dir, f"data/{target_base_path}.json")
 
     # Lista de sufijos para los archivos de entrada
-    input_suffixes = ["003.jpeg"]
+    input_suffixes = ["001.jpg"]
     input_paths = [os.path.join(target_dir, f"{target_base_path}.eg{suffix}") for suffix in input_suffixes]
     
     # Paso 0: Cargar datos (una vez) --------------------------------------------------------------
