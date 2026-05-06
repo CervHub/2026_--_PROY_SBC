@@ -13,50 +13,96 @@ from lib.parallel_task_queue import ParallelTaskQueue
 from lib.utils.corporation_handler import CorporationHandler
 from lib.utils.management_handler import ManagementHandler
 
-def align_and_crop(input_path, template_path, data, output_dir="outputs"):
-    """"Alinea la imagen de entrada con la plantilla y recorta las regiones especificadas."""
+def align_and_crop(input_path, template_path, data, output_dir="outputs", align_fn=None):
+    """Alinea la imagen de entrada con la plantilla usando la función especificada y recorta las regiones."""
     # Leer imágenes
     img = cv2.imread(input_path, 0)
     template = cv2.imread(template_path, 0)
 
-    # Detectar puntos clave y descriptores
+    # Seleccionar función de alineamiento
+    if align_fn is None:
+        # aligned = align_by_aruco_markers(img, template)
+        aligned = align_by_feature_matching(img, template)
+    else:
+        aligned = align_fn(img, template)
+
+    crop_regions(aligned, data, output_dir)
+
+def align_by_feature_matching(img, template):
+    """Alinea img con template usando feature matching y retorna la imagen alineada."""
     orb = cv2.ORB_create(10000)
     kp1, des1 = orb.detectAndCompute(template, None)
     kp2, des2 = orb.detectAndCompute(img, None)
-
-    # Hacer matching de puntos
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
     matches = bf.match(des1, des2)
     matches = sorted(matches, key=lambda x: x.distance)
-
-    # Filtrar los mejores matches para mejorar la precisión
-    num_good_matches = min(100, int(len(matches) * 0.15))  # top 15% o máximo 100
+    num_good_matches = min(100, int(len(matches) * 0.15))
     good_matches = matches[:num_good_matches]
     if len(good_matches) < 4:
         raise ValueError("No hay suficientes matches buenos para calcular la homografía.")
-
-    # Calcular homografía solo con los mejores matches
     src_pts = np.float32([kp1[m.queryIdx].pt for m in good_matches]).reshape(-1,1,2)
     dst_pts = np.float32([kp2[m.trainIdx].pt for m in good_matches]).reshape(-1,1,2)
     H, mask = cv2.findHomography(dst_pts, src_pts, cv2.RANSAC, 5.0)
-
-    # Alinear imagen
     h, w = template.shape
     aligned = cv2.warpPerspective(img, H, (w, h))
+    return aligned
 
-    # Crear carpeta de salida
+def crop_regions(aligned, data, output_dir):
+    """Recorta y guarda las regiones de interés de la imagen alineada."""
     os.makedirs(output_dir, exist_ok=True)
-
-    # Recorrer todas las regiones en profundidad y guardar cada crop
     for idx, region in enumerate(data.iter_regions()):
         y1, y2, x1, x2 = region.as_tuple()
         crop = aligned[y1:y2, x1:x2]
-        # Nombre único para cada región
         region_dir = os.path.join(output_dir, "regions")
         os.makedirs(region_dir, exist_ok=True)
         out_path = os.path.join(region_dir, f"region_{idx}.png")
         cv2.imwrite(out_path, crop)
         region.image_path = out_path
+
+def align_by_aruco_markers(img, template):
+    """Alinea img con template usando ArUco markers en las esquinas. Retorna la imagen alineada."""
+    # 1. Definir el diccionario de ArUco y los parámetros del detector
+    aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+    parameters = cv2.aruco.DetectorParameters()
+
+    # 2. Detectar marcadores en ambas imágenes
+    detector = cv2.aruco.ArucoDetector(aruco_dict, parameters)
+    corners_t, ids_t, _ = detector.detectMarkers(template)
+    corners_i, ids_i, _ = detector.detectMarkers(img)
+
+    if ids_t is None or ids_i is None or len(ids_t) < 4 or len(ids_i) < 4:
+        raise ValueError("No se detectaron suficientes marcadores ArUco en ambas imágenes.")
+
+    # 3. Emparejar los IDs de los marcadores entre ambas imágenes
+    ids_t = ids_t.flatten()
+    ids_i = ids_i.flatten()
+    common_ids = set(ids_t) & set(ids_i)
+    if len(common_ids) < 4:
+        raise ValueError("Se requieren al menos 4 marcadores ArUco comunes para la alineación.")
+
+    # 4. Obtener las esquinas de los marcadores comunes
+    src_pts = []  # puntos en img
+    dst_pts = []  # puntos en template
+    for marker_id in common_ids:
+        idx_t = list(ids_t).index(marker_id)
+        idx_i = list(ids_i).index(marker_id)
+        # Tomar la primera esquina de cada marcador (puedes usar todas si quieres mayor precisión)
+        # Aquí usamos el centro del marcador para mayor robustez
+        c_t = corners_t[idx_t][0]
+        c_i = corners_i[idx_i][0]
+        center_t = np.mean(c_t, axis=0)
+        center_i = np.mean(c_i, axis=0)
+        dst_pts.append(center_t)
+        src_pts.append(center_i)
+
+    src_pts = np.array(src_pts, dtype=np.float32).reshape(-1, 1, 2)
+    dst_pts = np.array(dst_pts, dtype=np.float32).reshape(-1, 1, 2)
+
+    # 5. Calcular la homografía y alinear
+    H, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
+    h, w = template.shape
+    aligned = cv2.warpPerspective(img, H, (w, h))
+    return aligned
 
 def resolve(data):
     """
@@ -96,7 +142,7 @@ def resolve(data):
 def main():
     corporation_id = 1
     management_id = 1
-    version = "v06"
+    version = "v07"
     input_dir = "inputs"
     corporation_dir = CorporationHandler.get_by_id(corporation_id)
     management_dir = ManagementHandler.get_by_corporation_and_id(corporation_dir, management_id)
@@ -108,7 +154,9 @@ def main():
     target_template_mapping_path = os.path.join(target_dir, f"data/{target_base_path}.json")
 
     # Lista de sufijos para los archivos de entrada
-    input_suffixes = ["001.jpeg", "002.jpeg", "003.jpeg", "004.jpeg", "005.jpeg", "006.jpeg", "007.jpeg", "008.jpeg", "009.jpeg", "010.jpeg", "011.jpeg", "012.jpg"]
+    # input_suffixes = ["001.jpeg", "002.jpeg", "003.jpeg", "004.jpeg", "005.jpeg", "006.jpeg", "007.jpeg", "008.jpeg", "009.jpeg", "010.jpeg", "011.jpeg", "012.jpg"]
+    # input_suffixes = ["001.jpg", "002.jpeg", "003.jpeg"]
+    input_suffixes = ["002.jpeg"]
     input_paths = [os.path.join(target_dir, f"{target_base_path}.eg{suffix}") for suffix in input_suffixes]
     
     # Paso 0: Cargar datos (una vez) --------------------------------------------------------------

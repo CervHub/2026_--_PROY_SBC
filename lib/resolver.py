@@ -24,7 +24,7 @@ class Resolver:
     client = vision.ImageAnnotatorClient()
     @staticmethod
     def hw(image_path):
-        return ""
+        return Resolver.ocr(image_path)
         """"
         Realiza OCR (Especializado en Hand Writing) usando Google Cloud Vision API y retorna el texto extraído.
         """
@@ -125,7 +125,7 @@ class Resolver:
         score = (
             0.6 * density +           # densidad tiene más peso
             0.2 * center_weight +     # peso por píxel respecto al centro
-            0.2 * (n_components / 10) # más componentes suma peso, normalizado
+            0.0 * (n_components / 10) # más componentes suma peso, normalizado
         )
 
         # 9. Calcular threshold adaptativo: decae suavemente con el área, nunca menor a 0.05 ni mayor a 0.3

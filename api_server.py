@@ -21,7 +21,12 @@ app = Flask(__name__)
 from main import align_and_crop, resolve
 
 @app.route('/api/sbc/extract-content/<int:corporation_id>/<int:management_id>/<version>', methods=['POST'])
+
 def extract_content(corporation_id, management_id, version):
+    # Verifica que Poppler esté instalado (pdftoppm en PATH)
+    import shutil
+    if shutil.which('pdftoppm') is None:
+        return jsonify({'error': 'Poppler no está instalado o pdftoppm no está en el PATH. Instala Poppler y asegúrate de que pdftoppm esté disponible.'}), 500
     if 'images' not in request.files:
         return jsonify({'error': 'No images part in the request'}), 400
     images = request.files.getlist('images')
@@ -43,15 +48,32 @@ def extract_content(corporation_id, management_id, version):
         raw_data = json.load(f)
     template_data = model.from_json(raw_data)
 
-    # Save uploaded images to a temp folder
+    # Save uploaded images or pdfs to a temp folder
     temp_dir = os.path.join("outputs", "api_uploads")
     os.makedirs(temp_dir, exist_ok=True)
     input_paths = []
+    from werkzeug.datastructures import FileStorage
+    from pdf2image import convert_from_path, convert_from_bytes
+
     for idx, img in enumerate(images):
         filename = secure_filename(img.filename)
+        ext = os.path.splitext(filename)[1].lower()
         save_path = os.path.join(temp_dir, f"{idx}_{filename}")
         img.save(save_path)
-        input_paths.append(save_path)
+        if ext == '.pdf':
+            # Convert PDF to images (one per page)
+            try:
+                # Use convert_from_bytes for in-memory file
+                img.seek(0)
+                pages = convert_from_bytes(img.read())
+                for page_num, page in enumerate(pages):
+                    page_img_path = os.path.join(temp_dir, f"{idx}_{filename}_page_{page_num+1}.jpg")
+                    page.save(page_img_path, 'JPEG')
+                    input_paths.append(page_img_path)
+            except Exception as e:
+                return jsonify({'error': f'Error processing PDF {filename}: {str(e)}'}), 500
+        else:
+            input_paths.append(save_path)
 
     # Step 1: Segment images
     data_list = [copy.deepcopy(template_data) for _ in input_paths]
