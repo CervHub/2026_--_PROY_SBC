@@ -76,5 +76,8 @@ class Region:
 class BaseField:
     """
     Clase base para todos los campos de extracción.
+
+    Args:
+        key (str): Identificador del campo.
     """
-    pass
+    key: Optional[str]

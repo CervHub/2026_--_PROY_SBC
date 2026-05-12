@@ -3,7 +3,8 @@ import requests
 
 # Configura la URL base y los parámetros de prueba
 def test_extract_content():
-    url = "http://127.0.0.1:1234/api/sbc/extract-content"
+    # url = "http://127.0.0.1:1234/api/sbc/extract-content"
+    url = "http://50.19.240.57:1234/api/sbc/extract-content"
     # files = [
     #     ("reference_form", ("template.jpg", open("templates/ilo/abastecimientos/ilo.abastecimientos.v01.jpg", "rb"), "image/jpg")),
     #     ("bounding_boxes", ("template.json", open("templates/ilo/abastecimientos/ilo.abastecimientos.v01.json", "rb"), "application/json")),

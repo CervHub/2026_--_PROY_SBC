@@ -19,7 +19,6 @@ class Field(BaseField):
         label_region (Region): Región de la etiqueta.
         value_region (Region): Región del valor.
     """
-    key: Optional[str]
     index: Optional[int]
     label_region: Region
     value_region: Region
