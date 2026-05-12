@@ -2,5 +2,9 @@ opencv-python
 numpy<2.0
 pytesseract
 google-cloud-vision
-flask
+fastapi
+uvicorn
+pydantic
+pydantic-settings
 pdf2image
+python-multipart
