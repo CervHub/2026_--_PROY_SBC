@@ -1,0 +1,1338 @@
+{
+    "title": "LISTA DE VERIFICACIÓN PARA OBSERVACIONES DE COMPORTAMIENTO (SBC): Mantenimiento Concentradora",
+    "version": "GPS-PG-25.F.07",
+    "fields": [
+        {
+            "key": "observer_name",
+            "field": {
+                "label_region": {
+                    "fixed_value": "Nombre del Observador",
+                    "resolver": "OCR",
+                    "y1": 124,
+                    "y2": 146,
+                    "x1": 48,
+                    "x2": 240
+                },
+                "value_region": {
+                    "resolver": "HW",
+                    "y1": 102,
+                    "y2": 154,
+                    "x1": 243,
+                    "x2": 621
+                }
+            }
+        },
+        {
+            "key": "observer_code",
+            "field": {
+                "label_region": {
+                    "fixed_value": "Registro",
+                    "resolver": "OCR",
+                    "y1": 0,
+                    "y2": 1,
+                    "x1": 0,
+                    "x2": 1
+                },
+                "value_region": {
+                    "resolver": "HW",
+                    "y1": 114,
+                    "y2": 155,
+                    "x1": 513,
+                    "x2": 620
+                }
+            }
+        },
+        {
+            "key": "date",
+            "field": {
+                "label_region": {
+                    "fixed_value": "Fecha",
+                    "resolver": "OCR",
+                    "y1": 123,
+                    "y2": 146,
+                    "x1": 623,
+                    "x2": 666
+                },
+                "value_region": {
+                    "resolver": "HW",
+                    "y1": 101,
+                    "y2": 155,
+                    "x1": 668,
+                    "x2": 824
+                }
+            }
+        },
+        {
+            "key": "time",
+            "field": {
+                "label_region": {
+                    "fixed_value": "Hora",
+                    "resolver": "OCR",
+                    "y1": 124,
+                    "y2": 146,
+                    "x1": 825,
+                    "x2": 865
+                },
+                "value_region": {
+                    "resolver": "HW",
+                    "y1": 98,
+                    "y2": 153,
+                    "x1": 865,
+                    "x2": 1016
+                }
+            }
+        },
+        {
+            "key": "section",
+            "field": {
+                "label_region": {
+                    "fixed_value": "Taller / Sección del Observador",
+                    "resolver": "OCR",
+                    "y1": 155,
+                    "y2": 177,
+                    "x1": 48,
+                    "x2": 294
+                },
+                "value_region": {
+                    "resolver": "HW",
+                    "y1": 152,
+                    "y2": 182,
+                    "x1": 297,
+                    "x2": 1233
+                }
+            }
+        },
+        {
+            "key": "area",
+            "field_group": {
+                "label_region": {
+                    "fixed_value": "Taller del Observado",
+                    "resolver": "OCR",
+                    "y1": 174,
+                    "y2": 198,
+                    "x1": 47,
+                    "x2": 226
+                },
+                "options": [
+                    {
+                        "index": 1,
+                        "label_region": {
+                            "fixed_value": "Electric. & Instr. Conc.",
+                            "resolver": "OCR",
+                            "y1": 185,
+                            "y2": 204,
+                            "x1": 219,
+                            "x2": 379
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 203,
+                            "y2": 209,
+                            "x1": 222,
+                            "x2": 377
+                        }
+                    },
+                    {
+                        "index": 2,
+                        "label_region": {
+                            "fixed_value": "Molinos (CI)",
+                            "resolver": "OCR",
+                            "y1": 186,
+                            "y2": 203,
+                            "x1": 397,
+                            "x2": 512
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 203,
+                            "y2": 211,
+                            "x1": 460,
+                            "x2": 478
+                        }
+                    },
+                    {
+                        "index": 3,
+                        "label_region": {
+                            "fixed_value": "Molinos (CII)",
+                            "resolver": "OCR",
+                            "y1": 186,
+                            "y2": 203,
+                            "x1": 397,
+                            "x2": 512
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 203,
+                            "y2": 210,
+                            "x1": 488,
+                            "x2": 508
+                        }
+                    },
+                    {
+                        "index": 4,
+                        "label_region": {
+                            "fixed_value": "Filtros (CI)",
+                            "resolver": "OCR",
+                            "y1": 183,
+                            "y2": 204,
+                            "x1": 528,
+                            "x2": 635
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 204,
+                            "y2": 212,
+                            "x1": 582,
+                            "x2": 602
+                        }
+                    },
+                    {
+                        "index": 5,
+                        "label_region": {
+                            "fixed_value": "Filtros (CII)",
+                            "resolver": "OCR",
+                            "y1": 185,
+                            "y2": 204,
+                            "x1": 219,
+                            "x2": 379
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 202,
+                            "y2": 212,
+                            "x1": 612,
+                            "x2": 628
+                        }
+                    },
+                    {
+                        "index": 6,
+                        "label_region": {
+                            "fixed_value": "Chancado MT",
+                            "resolver": "OCR",
+                            "y1": 185,
+                            "y2": 202,
+                            "x1": 657,
+                            "x2": 760
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 202,
+                            "y2": 211,
+                            "x1": 661,
+                            "x2": 757
+                        }
+                    },
+                    {
+                        "index": 7,
+                        "label_region": {
+                            "fixed_value": "Chancado II (CI)",
+                            "resolver": "OCR",
+                            "y1": 184,
+                            "y2": 205,
+                            "x1": 782,
+                            "x2": 929
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 203,
+                            "y2": 213,
+                            "x1": 879,
+                            "x2": 897
+                        }
+                    },
+                    {
+                        "index": 8,
+                        "label_region": {
+                            "fixed_value": "Chancado II (CII)",
+                            "resolver": "OCR",
+                            "y1": 184,
+                            "y2": 205,
+                            "x1": 782,
+                            "x2": 929
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 204,
+                            "y2": 212,
+                            "x1": 903,
+                            "x2": 926
+                        }
+                    },
+                    {
+                        "index": 9,
+                        "label_region": {
+                            "fixed_value": "Chancado III",
+                            "resolver": "OCR",
+                            "y1": 184,
+                            "y2": 203,
+                            "x1": 951,
+                            "x2": 1049
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 202,
+                            "y2": 211,
+                            "x1": 955,
+                            "x2": 1049
+                        }
+                    },
+                    {
+                        "index": 10,
+                        "label_region": {
+                            "fixed_value": "HPGR (CI)",
+                            "resolver": "OCR",
+                            "y1": 186,
+                            "y2": 204,
+                            "x1": 1073,
+                            "x2": 1180
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 204,
+                            "y2": 212,
+                            "x1": 1126,
+                            "x2": 1150
+                        }
+                    },
+                    {
+                        "index": 11,
+                        "label_region": {
+                            "fixed_value": "HPGR (CII)",
+                            "resolver": "OCR",
+                            "y1": 186,
+                            "y2": 204,
+                            "x1": 1073,
+                            "x2": 1180
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 203,
+                            "y2": 212,
+                            "x1": 1155,
+                            "x2": 1179
+                        }
+                    },
+                    {
+                        "index": 12,
+                        "label_region": {
+                            "fixed_value": "Elect. Dep Lix.",
+                            "resolver": "OCR",
+                            "y1": 210,
+                            "y2": 229,
+                            "x1": 219,
+                            "x2": 324
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 228,
+                            "y2": 235,
+                            "x1": 222,
+                            "x2": 320
+                        }
+                    },
+                    {
+                        "index": 13,
+                        "label_region": {
+                            "fixed_value": "Mec. Dep. Lix.",
+                            "resolver": "OCR",
+                            "y1": 209,
+                            "y2": 229,
+                            "x1": 339,
+                            "x2": 442
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 228,
+                            "y2": 236,
+                            "x1": 344,
+                            "x2": 440
+                        }
+                    },
+                    {
+                        "index": 14,
+                        "label_region": {
+                            "fixed_value": "Ing. Mantenimiento",
+                            "resolver": "OCR",
+                            "y1": 209,
+                            "y2": 229,
+                            "x1": 456,
+                            "x2": 597
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 228,
+                            "y2": 236,
+                            "x1": 460,
+                            "x2": 593
+                        }
+                    },
+                    {
+                        "index": 15,
+                        "label_region": {
+                            "fixed_value": "Maestranza",
+                            "resolver": "OCR",
+                            "y1": 209,
+                            "y2": 228,
+                            "x1": 619,
+                            "x2": 702
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 228,
+                            "y2": 236,
+                            "x1": 619,
+                            "x2": 703
+                        }
+                    },
+                    {
+                        "index": 16,
+                        "label_region": {
+                            "fixed_value": "Sistemas de Agua",
+                            "resolver": "OCR",
+                            "y1": 212,
+                            "y2": 229,
+                            "x1": 716,
+                            "x2": 849
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 226,
+                            "y2": 235,
+                            "x1": 720,
+                            "x2": 848
+                        }
+                    },
+                    {
+                        "index": 17,
+                        "label_region": {
+                            "fixed_value": "Transportes",
+                            "resolver": "OCR",
+                            "y1": 209,
+                            "y2": 229,
+                            "x1": 859,
+                            "x2": 949
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 227,
+                            "y2": 235,
+                            "x1": 863,
+                            "x2": 947
+                        }
+                    },
+                    {
+                        "index": 18,
+                        "label_region": {
+                            "fixed_value": "Rebobinados",
+                            "resolver": "OCR",
+                            "y1": 210,
+                            "y2": 229,
+                            "x1": 964,
+                            "x2": 1060
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 226,
+                            "y2": 235,
+                            "x1": 967,
+                            "x2": 1059
+                        }
+                    },
+                    {
+                        "index": 19,
+                        "label_region": {
+                            "fixed_value": "Gerencia",
+                            "resolver": "OCR",
+                            "y1": 210,
+                            "y2": 229,
+                            "x1": 1077,
+                            "x2": 1145
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 226,
+                            "y2": 233,
+                            "x1": 1082,
+                            "x2": 1142
+                        }
+                    },
+                    {
+                        "index": 20,
+                        "label_region": {
+                            "fixed_value": "Otros",
+                            "resolver": "OCR",
+                            "y1": 212,
+                            "y2": 228,
+                            "x1": 1158,
+                            "x2": 1198
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 225,
+                            "y2": 232,
+                            "x1": 1159,
+                            "x2": 1196
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "key": "activity",
+            "field_group": {
+                "label_region": {
+                    "fixed_value": "Actividad",
+                    "resolver": "OCR",
+                    "y1": 256,
+                    "y2": 276,
+                    "x1": 47,
+                    "x2": 131
+                },
+                "options": [
+                    {
+                        "index": 1,
+                        "label_region": {
+                            "fixed_value": "Mtto. Électrico Campo",
+                            "resolver": "OCR",
+                            "y1": 258,
+                            "y2": 275,
+                            "x1": 136,
+                            "x2": 298
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 274,
+                            "y2": 281,
+                            "x1": 139,
+                            "x2": 293
+                        }
+                    },
+                    {
+                        "index": 2,
+                        "label_region": {
+                            "fixed_value": "Mtto. Mecánico Campo",
+                            "resolver": "OCR",
+                            "y1": 260,
+                            "y2": 274,
+                            "x1": 318,
+                            "x2": 483
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 273,
+                            "y2": 280,
+                            "x1": 320,
+                            "x2": 481
+                        }
+                    },
+                    {
+                        "index": 3,
+                        "label_region": {
+                            "fixed_value": "Mtto Eléctrico",
+                            "resolver": "OCR",
+                            "y1": 258,
+                            "y2": 276,
+                            "x1": 501,
+                            "x2": 606
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 273,
+                            "y2": 280,
+                            "x1": 505,
+                            "x2": 601
+                        }
+                    },
+                    {
+                        "index": 4,
+                        "label_region": {
+                            "fixed_value": "Mtto Mecánico",
+                            "resolver": "OCR",
+                            "y1": 257,
+                            "y2": 275,
+                            "x1": 625,
+                            "x2": 739
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 274,
+                            "y2": 280,
+                            "x1": 629,
+                            "x2": 735
+                        }
+                    },
+                    {
+                        "index": 5,
+                        "label_region": {
+                            "fixed_value": "Contratista",
+                            "resolver": "OCR",
+                            "y1": 258,
+                            "y2": 276,
+                            "x1": 758,
+                            "x2": 838
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 273,
+                            "y2": 281,
+                            "x1": 761,
+                            "x2": 836
+                        }
+                    },
+                    {
+                        "index": 6,
+                        "label_region": {
+                            "fixed_value": "Administrativo",
+                            "resolver": "OCR",
+                            "y1": 257,
+                            "y2": 275,
+                            "x1": 857,
+                            "x2": 962
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 272,
+                            "y2": 280,
+                            "x1": 861,
+                            "x2": 959
+                        }
+                    },
+                    {
+                        "index": 7,
+                        "label_region": {
+                            "fixed_value": "Otros",
+                            "resolver": "OCR",
+                            "y1": 259,
+                            "y2": 274,
+                            "x1": 974,
+                            "x2": 1014
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 272,
+                            "y2": 279,
+                            "x1": 975,
+                            "x2": 1013
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "key": "task",
+            "field_group": {
+                "label_region": {
+                    "fixed_value": "Tarea",
+                    "resolver": "OCR",
+                    "y1": 281,
+                    "y2": 306,
+                    "x1": 48,
+                    "x2": 104
+                },
+                "options": [
+                    {
+                        "index": 1,
+                        "label_region": {
+                            "fixed_value": "Operación",
+                            "resolver": "OCR",
+                            "y1": 283,
+                            "y2": 303,
+                            "x1": 114,
+                            "x2": 193
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 301,
+                            "y2": 307,
+                            "x1": 121,
+                            "x2": 190
+                        }
+                    },
+                    {
+                        "index": 2,
+                        "label_region": {
+                            "fixed_value": "Mantenimiento",
+                            "resolver": "OCR",
+                            "y1": 282,
+                            "y2": 302,
+                            "x1": 212,
+                            "x2": 322
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 300,
+                            "y2": 306,
+                            "x1": 216,
+                            "x2": 320
+                        }
+                    },
+                    {
+                        "index": 3,
+                        "label_region": {
+                            "fixed_value": "Orden y Limpieza",
+                            "resolver": "OCR",
+                            "y1": 284,
+                            "y2": 303,
+                            "x1": 341,
+                            "x2": 469
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 299,
+                            "y2": 305,
+                            "x1": 346,
+                            "x2": 466
+                        }
+                    },
+                    {
+                        "index": 4,
+                        "label_region": {
+                            "fixed_value": "Trabajo Físico",
+                            "resolver": "OCR",
+                            "y1": 282,
+                            "y2": 302,
+                            "x1": 490,
+                            "x2": 595
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 300,
+                            "y2": 306,
+                            "x1": 495,
+                            "x2": 592
+                        }
+                    },
+                    {
+                        "index": 5,
+                        "label_region": {
+                            "fixed_value": "Inspección",
+                            "resolver": "OCR",
+                            "y1": 283,
+                            "y2": 301,
+                            "x1": 614,
+                            "x2": 697
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 301,
+                            "y2": 306,
+                            "x1": 620,
+                            "x2": 692
+                        }
+                    },
+                    {
+                        "index": 6,
+                        "label_region": {
+                            "fixed_value": "Izaje",
+                            "resolver": "OCR",
+                            "y1": 283,
+                            "y2": 302,
+                            "x1": 713,
+                            "x2": 755
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 301,
+                            "y2": 307,
+                            "x1": 715,
+                            "x2": 752
+                        }
+                    },
+                    {
+                        "index": 7,
+                        "label_region": {
+                            "fixed_value": "Otros",
+                            "resolver": "OCR",
+                            "y1": 282,
+                            "y2": 301,
+                            "x1": 762,
+                            "x2": 809
+                        },
+                        "value_region": {
+                            "resolver": "OMR",
+                            "y1": 300,
+                            "y2": 306,
+                            "x1": 765,
+                            "x2": 805
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "key": "task_detail",
+            "field": {
+                "label_region": {
+                    "fixed_value": "Tarea Observada (indique que tarea esta realizando el Observado)",
+                    "resolver": "OCR",
+                    "y1": 311,
+                    "y2": 335,
+                    "x1": 49,
+                    "x2": 562
+                },
+                "value_region": {
+                    "resolver": "HW",
+                    "y1": 305,
+                    "y2": 344,
+                    "x1": 572,
+                    "x2": 1213
+                }
+            }
+        },
+        {
+            "key": "observations",
+            "observations": [
+                {
+                    "index": 1,
+                    "label_region": {
+                        "fixed_value": "1. Mantenerse alejado de la \"Línea de Fuego\". No Ubicarse en lugares donde pueda ser aplastado, atrapado o golpeado por algún elemento o maquinaria.",
+                        "resolver": "OCR",
+                        "y1": 502,
+                        "y2": 593,
+                        "x1": 63,
+                        "x2": 306
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 496,
+                        "y2": 526,
+                        "x1": 669,
+                        "x2": 1174
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 528,
+                        "y2": 559,
+                        "x1": 607,
+                        "x2": 1173
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 561,
+                        "y2": 601,
+                        "x1": 629,
+                        "x2": 1174
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 502,
+                        "y2": 594,
+                        "x1": 321,
+                        "x2": 352
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 610,
+                        "y2": 689,
+                        "x1": 368,
+                        "x2": 399
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 503,
+                        "y2": 593,
+                        "x1": 1182,
+                        "x2": 1214
+                    }
+                },
+                {
+                    "index": 2,
+                    "label_region": {
+                        "fixed_value": "2. Usar buenas técnicas corporales para: alcanzar, jalar, levantar o trasladar materiales.",
+                        "resolver": "OCR",
+                        "y1": 579,
+                        "y2": 658,
+                        "x1": 61,
+                        "x2": 304
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 604,
+                        "y2": 634,
+                        "x1": 669,
+                        "x2": 1174
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 635,
+                        "y2": 664,
+                        "x1": 607,
+                        "x2": 1173
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 666,
+                        "y2": 696,
+                        "x1": 629,
+                        "x2": 1174
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 610,
+                        "y2": 689,
+                        "x1": 321,
+                        "x2": 352
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 705,
+                        "y2": 784,
+                        "x1": 368,
+                        "x2": 399
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 612,
+                        "y2": 689,
+                        "x1": 1182,
+                        "x2": 1214
+                    }
+                },
+                {
+                    "index": 3,
+                    "label_region": {
+                        "fixed_value": "3. Mantener las partes del cuerpo alejadas de \"Puntos de Atrapamiento\".",
+                        "resolver": "OCR",
+                        "y1": 681,
+                        "y2": 741,
+                        "x1": 58,
+                        "x2": 299
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 698,
+                        "y2": 730,
+                        "x1": 669,
+                        "x2": 1173
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 731,
+                        "y2": 762,
+                        "x1": 607,
+                        "x2": 1173
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 764,
+                        "y2": 793,
+                        "x1": 629,
+                        "x2": 1173
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 706,
+                        "y2": 785,
+                        "x1": 321,
+                        "x2": 352
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 675,
+                        "y2": 747,
+                        "x1": 366,
+                        "x2": 396
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 707,
+                        "y2": 786,
+                        "x1": 1182,
+                        "x2": 1213
+                    }
+                },
+                {
+                    "index": 4,
+                    "label_region": {
+                        "fixed_value": "4. Mantener los ojos en la tarea (una tarea a la vez) y en el camino al caminar (mantener la vista en dirección del desplazamiento).",
+                        "resolver": "OCR",
+                        "y1": 768,
+                        "y2": 868,
+                        "x1": 60,
+                        "x2": 294
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 796,
+                        "y2": 825,
+                        "x1": 669,
+                        "x2": 1173
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 828,
+                        "y2": 857,
+                        "x1": 607,
+                        "x2": 1173
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 859,
+                        "y2": 889,
+                        "x1": 629,
+                        "x2": 1173
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 802,
+                        "y2": 881,
+                        "x1": 321,
+                        "x2": 352
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 802,
+                        "y2": 881,
+                        "x1": 368,
+                        "x2": 399
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 805,
+                        "y2": 880,
+                        "x1": 1182,
+                        "x2": 1213
+                    }
+                },
+                {
+                    "index": 5,
+                    "label_region": {
+                        "fixed_value": "5. Usar herramientas y equipos en buenas condiciones, según su diseño y función para el trabajo.",
+                        "resolver": "OCR",
+                        "y1": 887,
+                        "y2": 983,
+                        "x1": 61,
+                        "x2": 299
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 892,
+                        "y2": 922,
+                        "x1": 669,
+                        "x2": 1173
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 923,
+                        "y2": 954,
+                        "x1": 607,
+                        "x2": 1173
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 956,
+                        "y2": 986,
+                        "x1": 629,
+                        "x2": 1173
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 898,
+                        "y2": 979,
+                        "x1": 321,
+                        "x2": 352
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 898,
+                        "y2": 979,
+                        "x1": 367,
+                        "x2": 399
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 900,
+                        "y2": 978,
+                        "x1": 1182,
+                        "x2": 1212
+                    }
+                },
+                {
+                    "index": 6,
+                    "label_region": {
+                        "fixed_value": "6. Utilizar EPP básico o específico apropiado para la tarea y en buenas condiciones.",
+                        "resolver": "OCR",
+                        "y1": 1007,
+                        "y2": 1065,
+                        "x1": 61,
+                        "x2": 302
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 988,
+                        "y2": 1018,
+                        "x1": 886,
+                        "x2": 1173
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 1020,
+                        "y2": 1050,
+                        "x1": 607,
+                        "x2": 1173
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 1052,
+                        "y2": 1081,
+                        "x1": 629,
+                        "x2": 1172
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 996,
+                        "y2": 1073,
+                        "x1": 321,
+                        "x2": 352
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 996,
+                        "y2": 1073,
+                        "x1": 367,
+                        "x2": 398
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 996,
+                        "y2": 1074,
+                        "x1": 1182,
+                        "x2": 1212
+                    }
+                },
+                {
+                    "index": 7,
+                    "label_region": {
+                        "fixed_value": "7. Establecer y mantener comunicación efectiva durante la realización de trabajos en grupo.",
+                        "resolver": "OCR",
+                        "y1": 1105,
+                        "y2": 1151,
+                        "x1": 59,
+                        "x2": 292
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 1084,
+                        "y2": 1114,
+                        "x1": 667,
+                        "x2": 1172
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 1116,
+                        "y2": 1147,
+                        "x1": 607,
+                        "x2": 1173
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 1149,
+                        "y2": 1179,
+                        "x1": 629,
+                        "x2": 1172
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 1091,
+                        "y2": 1170,
+                        "x1": 321,
+                        "x2": 352
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 1091,
+                        "y2": 1170,
+                        "x1": 367,
+                        "x2": 397
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 1092,
+                        "y2": 1170,
+                        "x1": 1181,
+                        "x2": 1211
+                    }
+                },
+                {
+                    "index": 8,
+                    "label_region": {
+                        "fixed_value": "8. Des-energizar equipos. Bloquear con Candado y Tarjeta para prevenir fuga de energias (energia Eléctrica, Hidráulica, Térmica, Mecánica, etc.)",
+                        "resolver": "OCR",
+                        "y1": 1197,
+                        "y2": 1254,
+                        "x1": 59,
+                        "x2": 292
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 1181,
+                        "y2": 1211,
+                        "x1": 667,
+                        "x2": 1172
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 1213,
+                        "y2": 1243,
+                        "x1": 607,
+                        "x2": 1172
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 1245,
+                        "y2": 1274,
+                        "x1": 629,
+                        "x2": 1172
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 1188,
+                        "y2": 1266,
+                        "x1": 320,
+                        "x2": 351
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 1188,
+                        "y2": 1266,
+                        "x1": 367,
+                        "x2": 397
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 1189,
+                        "y2": 1267,
+                        "x1": 1181,
+                        "x2": 1211
+                    }
+                },
+                {
+                    "index": 9,
+                    "label_region": {
+                        "fixed_value": "9. Precauciones durante la descarga, izaje y traslado de materiales.",
+                        "resolver": "OCR",
+                        "y1": 1293,
+                        "y2": 1351,
+                        "x1": 60,
+                        "x2": 304
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 1277,
+                        "y2": 1306,
+                        "x1": 667,
+                        "x2": 1172
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 1308,
+                        "y2": 1339,
+                        "x1": 607,
+                        "x2": 1172
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 1341,
+                        "y2": 1371,
+                        "x1": 629,
+                        "x2": 1172
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 1283,
+                        "y2": 1364,
+                        "x1": 320,
+                        "x2": 351
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 1283,
+                        "y2": 1364,
+                        "x1": 367,
+                        "x2": 397
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 1285,
+                        "y2": 1364,
+                        "x1": 1181,
+                        "x2": 1211
+                    }
+                },
+                {
+                    "index": 10,
+                    "label_region": {
+                        "fixed_value": "10. Mantener áreas con superficies y accesos limpios, ordenados e iluminados.",
+                        "resolver": "OCR",
+                        "y1": 1391,
+                        "y2": 1446,
+                        "x1": 61,
+                        "x2": 260
+                    },
+                    "concern_region": {
+                        "resolver": "HW",
+                        "y1": 1374,
+                        "y2": 1403,
+                        "x1": 667,
+                        "x2": 1172
+                    },
+                    "injury_region": {
+                        "resolver": "HW",
+                        "y1": 1406,
+                        "y2": 1435,
+                        "x1": 607,
+                        "x2": 1172
+                    },
+                    "alternative_region": {
+                        "resolver": "HW",
+                        "y1": 1437,
+                        "y2": 1466,
+                        "x1": 629,
+                        "x2": 1172
+                    },
+                    "s_region": {
+                        "resolver": "OMR",
+                        "y1": 1380,
+                        "y2": 1459,
+                        "x1": 319,
+                        "x2": 350
+                    },
+                    "p_region": {
+                        "resolver": "OMR",
+                        "y1": 1381,
+                        "y2": 1459,
+                        "x1": 366,
+                        "x2": 396
+                    },
+                    "r_region": {
+                        "resolver": "OMR",
+                        "y1": 1383,
+                        "y2": 1459,
+                        "x1": 1180,
+                        "x2": 1211
+                    }
+                }
+            ]
+        },
+        {
+            "key": "comment",
+            "field": {
+                "label_region": {
+                    "fixed_value": "Comentarios del Observador (y del Observado, si aplica)",
+                    "resolver": "OCR",
+                    "y1": 1483,
+                    "y2": 1511,
+                    "x1": 45,
+                    "x2": 528
+                },
+                "value_region": {
+                    "resolver": "HW",
+                    "y1": 1508,
+                    "y2": 1589,
+                    "x1": 40,
+                    "x2": 1224
+                }
+            }
+        }
+    ]
+}

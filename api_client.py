@@ -3,16 +3,8 @@ import requests
 
 # Configura la URL base y los parámetros de prueba
 def test_extract_content():
-    # url = "http://127.0.0.1:1234/api/sbc/extract-content"
-    url = "http://50.19.240.57:1234/api/sbc/extract-content"
-    # files = [
-    #     ("reference_form", ("template.jpg", open("templates/ilo/abastecimientos/ilo.abastecimientos.v01.jpg", "rb"), "image/jpg")),
-    #     ("bounding_boxes", ("template.json", open("templates/ilo/abastecimientos/ilo.abastecimientos.v01.json", "rb"), "application/json")),
-    #     ("images", ("img1.png", open("inputs/ilo/abastecimientos/ilo.abastecimientos.v01.eg001.png", "rb"), "image/png")),
-    #     ("images", ("img2.jpeg", open("inputs/ilo/abastecimientos/ilo.abastecimientos.v01.eg002.jpeg", "rb"), "image/jpeg")),
-    #     ("images", ("img3.jpeg", open("inputs/ilo/abastecimientos/ilo.abastecimientos.v01.eg003.jpeg", "rb"), "image/jpeg")),
-    #     ("images", ("img4.jpeg", open("inputs/ilo/abastecimientos/ilo.abastecimientos.v01.eg004.jpeg", "rb"), "image/jpeg")),
-    # ]
+    url = "http://127.0.0.1:1234/api/sbc/extract-content"
+    # url = "http://50.19.240.57:1234/api/sbc/extract-content"
     files = [
         ("reference_form", ("template.jpg", open("templates/toquepala/lesde/toquepala.lesde.v05.jpg", "rb"), "image/jpg")),
         ("bounding_boxes", ("template.json", open("templates/toquepala/lesde/toquepala.lesde.v05.json", "rb"), "application/json")),
