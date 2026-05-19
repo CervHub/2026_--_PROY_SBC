@@ -1,7 +1,7 @@
 import os
 from fastapi import UploadFile
-from pdf2image import convert_from_bytes
 from typing import List
+
 
 class PDFService:
     @staticmethod
@@ -10,6 +10,9 @@ class PDFService:
         Convierte un archivo PDF (UploadFile) en imágenes y las guarda en output_dir.
         Retorna la lista de rutas de las imágenes generadas.
         """
+        # Importar pdf2image sólo cuando se vaya a convertir
+        from pdf2image import convert_from_bytes
+
         os.makedirs(output_dir, exist_ok=True)
         content = await pdf_file.read()
         pages = convert_from_bytes(content)

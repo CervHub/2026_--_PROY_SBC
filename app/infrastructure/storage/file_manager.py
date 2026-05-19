@@ -10,7 +10,9 @@ from app.config.config import settings
 class FileManager:
     def __init__(self):
         unique_id = str(uuid.uuid4())
-        self.base_dir = os.path.join(settings.output_dir, unique_id)
+        # Use /tmp in AWS Lambda (writable). Allow override via TMP_DIR env var for local testing.
+        base_root = os.environ.get("TMP_DIR", "/tmp")
+        self.base_dir = os.path.join(base_root, unique_id)
         os.makedirs(self.base_dir, exist_ok=True)
 
     def create_temp_dir(self) -> str:

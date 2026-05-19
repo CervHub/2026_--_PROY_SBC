@@ -1,4 +1,3 @@
-import cv2
 import os
 import numpy as np
 from app.config.config import settings
@@ -10,38 +9,68 @@ class ExtractionService:
     @staticmethod
     def align_and_crop(input_path: str, template_path: str, data: Model, output_dir: str):
         """Alinea la imagen de entrada con la plantilla usando la función especificada y recorta las regiones."""
+        # Importar OpenCV de forma perezosa para evitar overhead en cold-start
+        import cv2
         # Leer imágenes
         img = cv2.imread(input_path, 0)
         template = cv2.imread(template_path, 0)
 
+        if img is None or template is None:
+            raise ValueError(f"Unable to read input or template image: {input_path}, {template_path}")
+
         # Seleccionar función de alineamiento
-        aligned = ExtractionService.align_by_feature_matching(img, template)
+        try:
+            aligned = ExtractionService.align_by_feature_matching(img, template)
+        except Exception as e:
+            print(f"[align_and_crop][WARN] Alignment failed for {input_path}: {e}")
+            return False
 
         ExtractionService.crop_regions(aligned, data, output_dir)
+        return True
 
     @staticmethod
-    def align_by_feature_matching(img: np.ndarray, template: np.ndarray) -> np.ndarray:
+    def align_by_feature_matching(img: 'np.ndarray', template: 'np.ndarray') -> 'np.ndarray':
         """Alinea img con template usando feature matching y retorna la imagen alineada."""
+        import cv2
         orb = cv2.ORB_create(10000)
         kp1, des1 = orb.detectAndCompute(template, None)
         kp2, des2 = orb.detectAndCompute(img, None)
+
+        if des1 is None or des2 is None:
+            raise ValueError(f"No descriptors found (des1_found={des1 is not None}, des2_found={des2 is not None})")
+
         bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-        matches = bf.match(des1, des2)
+        try:
+            matches = bf.match(des1, des2)
+        except cv2.error as e:
+            raise ValueError(f"Feature matching failed: {e}")
+
+        if not matches:
+            raise ValueError("No matches found between image and template.")
+
         matches = sorted(matches, key=lambda x: x.distance)
-        num_good_matches = min(100, int(len(matches) * 0.15))
+        if len(matches) < 4:
+            raise ValueError("No hay suficientes matches para calcular la homografía.")
+
+        num_good_matches = max(4, min(100, int(len(matches) * 0.15)))
         good_matches = matches[:num_good_matches]
-        if len(good_matches) < 4:
-            raise ValueError("No hay suficientes matches buenos para calcular la homografía.")
+
         src_pts = np.float32([kp1[m.queryIdx].pt for m in good_matches]).reshape(-1,1,2)
         dst_pts = np.float32([kp2[m.trainIdx].pt for m in good_matches]).reshape(-1,1,2)
         H, mask = cv2.findHomography(dst_pts, src_pts, cv2.RANSAC, 5.0)
-        h, w = template.shape
+        if H is None:
+            raise ValueError("Homography could not be computed.")
+
+        # template may be grayscale (h, w) or color (h, w, c)
+        h, w = template.shape[:2]
         aligned = cv2.warpPerspective(img, H, (w, h))
         return aligned
 
     @staticmethod
-    def crop_regions(aligned: np.ndarray, data: Model, output_dir: str):
+    def crop_regions(aligned: 'np.ndarray', data: Model, output_dir: str):
         """Recorta y guarda las regiones de interés de la imagen alineada."""
+        import cv2
+
         region_dir = os.path.join(output_dir, "regions")
         os.makedirs(region_dir, exist_ok=True)
         for idx, region in enumerate(data.iter_regions()):
@@ -64,7 +93,8 @@ class ExtractionService:
                 if hasattr(region, 'fixed_value') and region.fixed_value is not None:
                     value = region.fixed_value
                 elif region.resolver.value == "OCR":
-                    value = VisionService.ocr(region.image_path)
+                    value = ""
+                    # value = VisionService.ocr(region.image_path)
                 elif region.resolver.value == "OMR":
                     value = bool(VisionService.omr(region.image_path))
                 elif region.resolver.value == "HW":

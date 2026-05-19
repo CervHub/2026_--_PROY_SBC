@@ -16,6 +16,7 @@ class ExtractionPipeline:
 		# 1. Crear directorio temporal único
 		file_manager = FileManager()
 		temp_dir = file_manager.create_temp_dir()
+		print(f"[execute] Temporary directory created: {temp_dir}")
 
 		# 2. Guardar archivos de template
 		reference_form_path = await file_manager.save_uploaded_file(reference_form, prefix="reference_form")
@@ -41,19 +42,28 @@ class ExtractionPipeline:
 			raw_data = json.load(f)
 		template_data = Model.from_json(raw_data)
 
-		# 5. Para cada imagen, clonar el template y segmentar/extraer
-		data_list = [copy.deepcopy(template_data) for _ in input_paths]
-		for input_path, data in zip(input_paths, data_list):
+		# 5. Para cada imagen, clonar el template y segmentar/extraer.
+		# Si la imagen no se puede alinear, la saltamos.
+		data_list = []
+		for input_path in input_paths:
+			data = copy.deepcopy(template_data)
 			output_dir = os.path.join(temp_dir, f"output_{os.path.basename(input_path)}")
-			# Alinear y recortar regiones, pasando el output_dir específico
-			ExtractionService.align_and_crop(input_path, reference_form_path, data, output_dir)
+			try:
+				success = ExtractionService.align_and_crop(input_path, reference_form_path, data, output_dir)
+			except Exception as e:
+				print(f"[execute][WARN] Error processing {input_path}: {e}")
+				continue
+			if not success:
+				print(f"[execute][INFO] Skipping {input_path} because alignment failed.")
+				continue
+			data_list.append(data)
 
 		# 6. Resolver regiones (OCR/OMR/HW)
 		for data in data_list:
 			ExtractionService.resolve(data)
 
 		# 7. Limpiar directorio temporal
-		# file_manager.delete_temp_dir()
+		file_manager.delete_temp_dir()
 
 		# 8. Devolver resultados serializados
 		results = [data.to_json() for data in data_list]

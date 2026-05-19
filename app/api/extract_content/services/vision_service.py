@@ -1,41 +1,49 @@
 import os
-import cv2
-import pytesseract
-import numpy as np
 
-from google.cloud import vision
 
 class VisionService:
+    _client = None
+
     @staticmethod
-    def ocr(image_path: str) -> str:
+    def get_client():
+        """Inicializa el cliente de Google Vision de forma perezosa.
+
+        También asegura que las credenciales GCP estén disponibles llamando
+        a `ensure_gcp_credentials()` sólo cuando sea necesario.
         """
-        Realiza OCR en la imagen dada y retorna el texto extraído.
-        """
-        # Lee la imagen
-        img = cv2.imread(image_path, 0)
+        if VisionService._client is None:
+            # Cargar credenciales GCP de forma perezosa
+            from app.utils.gcp_credentials import ensure_gcp_credentials
 
-        # 1. Binarizar usando Otsu 
-        img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+            ensure_gcp_credentials()
+            # Importar el cliente de Vision sólo cuando se vaya a usar
+            from google.cloud import vision
 
-        # 2. Realizar OCR con Tesseract
-        config = "--oem 1 --psm 6" # LSTM OCR Engine, Assume a single uniform block of text
-        return pytesseract.image_to_string(img, lang="spa", config=config)
+            VisionService._client = vision.ImageAnnotatorClient()
+        return VisionService._client
 
-    client = vision.ImageAnnotatorClient()
     @staticmethod
     def hw(image_path: str) -> str:
-        return VisionService.ocr(image_path)
-        """"
-        Realiza OCR (Especializado en Hand Writing) usando Google Cloud Vision API y retorna el texto extraído.
+        """Realiza OCR (Hand Writing) usando Google Cloud Vision API.
+
+        Carga sólo las dependencias necesarias en tiempo de ejecución para
+        reducir el tiempo de cold-start.
         """
+        client = VisionService.get_client()
         with open(image_path, "rb") as image_file:
             content = image_file.read()
+        from google.cloud import vision
+
         image = vision.Image(content=content)
-        response = Resolver.client.document_text_detection(image=image)
+        response = client.document_text_detection(image=image)
         return response.full_text_annotation.text
 
     @staticmethod
     def omr(image_path: str, temp_dir: str = None) -> bool:
+        # Importar OpenCV y numpy de forma perezosa
+        import cv2
+        import numpy as np
+
         # Lee la imagen
         img = cv2.imread(image_path, 0)
 
@@ -138,8 +146,5 @@ class VisionService:
         smooth_factor = 0.005
         threshold = _max / (1 + smooth_factor * area) + _min
         threshold = min(max(threshold, _min), _max)
-
-        # DEBUG: Imprimir métricas para debug
-        # print(f"[{image_path}]: density={density:.3f} center_weight={center_weight:.3f} components={n_components:d} score={score:.3f} threshold={threshold:.3f} area={area:d}")
 
         return score > threshold
