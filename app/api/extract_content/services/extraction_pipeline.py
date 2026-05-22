@@ -3,6 +3,8 @@
 import os
 import json
 import copy
+import requests
+import mimetypes
 from typing import List, Any
 from fastapi import UploadFile
 from app.api.extract_content.domain.models.model import Model
@@ -16,7 +18,6 @@ class ExtractionPipeline:
 		# 1. Crear directorio temporal único
 		file_manager = FileManager()
 		temp_dir = file_manager.create_temp_dir()
-		print(f"[execute] Temporary directory created: {temp_dir}")
 
 		# 2. Guardar archivos de template
 		reference_form_path = await file_manager.save_uploaded_file(reference_form, prefix="reference_form")
@@ -44,7 +45,7 @@ class ExtractionPipeline:
 
 		# 5. Para cada imagen, clonar el template y segmentar/extraer.
 		# Si la imagen no se puede alinear, la saltamos.
-		data_list = []
+		processed = []
 		for input_path in input_paths:
 			data = copy.deepcopy(template_data)
 			output_dir = os.path.join(temp_dir, f"output_{os.path.basename(input_path)}")
@@ -56,6 +57,34 @@ class ExtractionPipeline:
 			if not success:
 				print(f"[execute][INFO] Skipping {input_path} because alignment failed.")
 				continue
+			processed.append((data, input_path))
+
+		# 5.b Subir imágenes procesadas al endpoint de storage y asignar image_url en el modelo
+		data_list = []
+		API_URL = os.environ.get("UPLOAD_API_URL", "http://localhost:8000/api/upload-images")
+		for data, img_path in processed:
+			try:
+				if not os.path.isfile(img_path):
+					print(f"[execute][WARN] File not found, skipping upload: {img_path}")
+					data_list.append(data)
+					continue
+				with open(img_path, "rb") as f:
+					mime = mimetypes.guess_type(img_path)[0] or "application/octet-stream"
+					files = [("files[]", (os.path.basename(img_path), f, mime))]
+					resp = requests.post(API_URL, files=files)
+					resp.raise_for_status()
+					resp_json = resp.json()
+					urls = None
+					if isinstance(resp_json, dict):
+						urls = resp_json.get("urls") or resp_json.get("data") or None
+					if isinstance(urls, list) and urls:
+						data.image_url = urls[0]
+					elif isinstance(resp_json.get("url"), str):
+						data.image_url = resp_json.get("url")
+					else:
+						print(f"[execute][WARN] Unexpected upload response for {img_path}: {resp_json}")
+			except Exception as e:
+				print(f"[execute][WARN] Failed to upload {img_path}: {e}")
 			data_list.append(data)
 
 		# 6. Resolver regiones (OCR/OMR/HW)
@@ -63,7 +92,7 @@ class ExtractionPipeline:
 			ExtractionService.resolve(data)
 
 		# 7. Limpiar directorio temporal
-		file_manager.delete_temp_dir()
+		# file_manager.delete_temp_dir()
 
 		# 8. Devolver resultados serializados
 		results = [data.to_json() for data in data_list]

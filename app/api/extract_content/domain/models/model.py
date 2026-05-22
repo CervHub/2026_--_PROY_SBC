@@ -2,8 +2,8 @@
 """
 Modelo principal para la extracción de contenido, compuesto por campos y observaciones.
 """
-from typing import List
-from dataclasses import dataclass
+from typing import List, Optional
+from dataclasses import dataclass, field
 from app.api.extract_content.domain.models.base import BaseField 
 from app.api.extract_content.domain.models.field import Field, OptionField
 from app.api.extract_content.domain.models.observation import ObservationGroup
@@ -22,6 +22,7 @@ class Model:
     title: str
     version: str
     fields: List[BaseField]
+    image_url: Optional[str] = None
 
 
     @staticmethod
@@ -31,6 +32,7 @@ class Model:
         """
         title = data.get("title", "")
         version = data.get("version", "")
+        image_url = data.get("image_url")
         fields: List[BaseField] = []
         for field_data in data.get("fields", []):
             if "field" in field_data:
@@ -39,7 +41,8 @@ class Model:
                 fields.append(OptionField.from_json(field_data["key"], field_data["field_group"]))
             elif "observations" in field_data:
                 fields.append(ObservationGroup.from_json(field_data))
-        return Model(title, version, fields)
+        # Model constructor expects (title, version, fields, image_url)
+        return Model(title, version, fields, image_url)
 
 
     def to_json(self) -> dict:
@@ -57,6 +60,7 @@ class Model:
         return {
             "title": self.title,
             "version": self.version,
+            "image_url": self.image_url,
             "fields": fields_json
         }
 

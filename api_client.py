@@ -22,23 +22,28 @@ def test_extract_content():
     #     ("images", ("doc6.pdf", open("inputs/toquepala/operaciones_mina/toquepala.operaciones_mina.v03.eg006.pdf", "rb"), "application/pdf")),
     #     ("images", ("doc7.pdf", open("inputs/toquepala/operaciones_mina/toquepala.operaciones_mina.v03.eg007.pdf", "rb"), "application/pdf")),
     # ]
+    # files = [
+    #     ("reference_form", ("template.jpg", open("templates/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.jpg", "rb"), "image/jpg")),
+    #     ("bounding_boxes", ("template.json", open("templates/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.json", "rb"), "application/json")),
+    #     ("images", ("doc1.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg001.pdf", "rb"), "application/pdf")),
+    #     ("images", ("doc2.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg002.pdf", "rb"), "application/pdf")),
+    #     ("images", ("doc3.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg003.pdf", "rb"), "application/pdf")),
+    #     ("images", ("doc4.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg004.pdf", "rb"), "application/pdf")),
+    #     ("images", ("doc5.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg005.pdf", "rb"), "application/pdf")),
+    #     ("images", ("doc6.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg006.pdf", "rb"), "application/pdf")),
+    #     ("images", ("doc7.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg007.pdf", "rb"), "application/pdf")),
+    # ]
     files = [
-        ("reference_form", ("template.jpg", open("templates/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.jpg", "rb"), "image/jpg")),
-        ("bounding_boxes", ("template.json", open("templates/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.json", "rb"), "application/json")),
-        ("images", ("doc1.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg001.pdf", "rb"), "application/pdf")),
-        ("images", ("doc2.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg002.pdf", "rb"), "application/pdf")),
-        ("images", ("doc3.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg003.pdf", "rb"), "application/pdf")),
-        ("images", ("doc4.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg004.pdf", "rb"), "application/pdf")),
-        ("images", ("doc5.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg005.pdf", "rb"), "application/pdf")),
-        ("images", ("doc6.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg006.pdf", "rb"), "application/pdf")),
-        ("images", ("doc7.pdf", open("inputs/toquepala/operaciones_mina_volquetes/toquepala.operaciones_mina_volquetes.v04.eg007.pdf", "rb"), "application/pdf")),
+        ("reference_form", ("template.jpg", open("templates/toquepala/operaciones_mina/toquepala.operaciones_mina.v03.jpg", "rb"), "image/jpg")),
+        ("bounding_boxes", ("template.json", open("templates/toquepala/operaciones_mina/toquepala.operaciones_mina.v03.json", "rb"), "application/json")),
+        ("images", ("doc7.pdf", open("inputs/toquepala/operaciones_mina/toquepala.operaciones_mina.v03.eg007.pdf", "rb"), "application/pdf")),
     ]
 
     start_time = time.time()
     response = requests.post(url, files=files)
     elapsed = time.time() - start_time
     print(f"Status code: {response.status_code}  |  Tiempo transcurrido: {elapsed:.2f} segundos")
-    for i in range(5):
+    for i in range(2):
         os.system('afplay /System/Library/Sounds/Glass.aiff')
     
     # DEBUG: Guardar la respuesta en un archivo .json en la carpeta outputs
